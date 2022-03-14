@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -41,17 +41,18 @@ class PostController extends Controller
      */
     public function store(PostStoreRequest $request)
     {
-        $post = $request->validated();
+        $data = $request->validated();
 
-        $newPost = new Post();
-        $newPost->fill($post);
+        $post = new Post();
+        $post->fill($data);
 
-        $slug=$this->generateSlug($newPost->title);
-        $newPost->slug = $slug;
+        $slug = $this->generateSlug($post->title);
+        $post->slug = $slug;
+        $post->author = Auth::user()->name;
 
-        $newPost->save();
-
-        return redirect()->route('admin.posts.index');
+        $post->save();
+        
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -60,9 +61,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $post = Post::where('slug', $slug)->first();
+
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
