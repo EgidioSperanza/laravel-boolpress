@@ -25,8 +25,11 @@ Route::middleware("auth")
     ->name("admin.")
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('home');
+        Route::resource('posts', 'PostController');
+        Route::resource('comments', 'PostController');
     });
 
+    Route::get('/guest.home', 'Auth\LoginController@logout');
 
 Route::get("{any?}", function() {
     return view("guest.home");
