@@ -12,10 +12,19 @@
                 <div class="card-body">
                     Autore: {{ Auth::user()->name }}
                     <p>{{ $post->content }}</p>
+                    <div class="small text-end">
+                        @if($post->created_at==$post->updated_at)
+                            Pubblicato il {{$post->created_at->format('d-m-Y')}}
+                            @else
+                            Modificato il {{$post->updated_at->format('d-m-Y')}}
+                        @endif
+                    </div>
                 </div>
                 <div class="card-footer d-flex">
                     <div class=" ms-auto">
-                        ciao
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary me-2">Indietro</a>
+                        @include('partials.destroybtn')
+                        @include('partials.updatebtn')
                     </div>
                 </div>
             </div>
