@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
@@ -30,7 +31,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -48,7 +51,7 @@ class PostController extends Controller
 
         $slug = $this->generateSlug($post->title);
         $post->slug = $slug;
-        $post->author = Auth::user()->name;
+        $post->user_id = Auth::user()->id;
 
         $post->save();
         
@@ -77,8 +80,12 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        $categories = Category::all();
 
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', [
+            "post" => $post,
+            "categories" => $categories
+        ]);
     }
 
     /**
@@ -105,11 +112,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if(Auth::user()->name = $post->author){
             $post->delete();
     
             return redirect()->route('admin.posts.index');
-        }
     }
 
     protected function generateSlug($slugReference){

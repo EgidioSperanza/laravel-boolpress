@@ -26,6 +26,7 @@ class PostStoreRequest extends FormRequest
         return [
             'title' => 'required|min:3|max:50',
             'content'  => 'required|min:50',
+            'category_id' => 'required',
         ];
     }
 }

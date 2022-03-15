@@ -17,7 +17,11 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
                                 <h3>{{$post->title}} </h3>
-                                <p>Autore: {{ $post->author }}</p>
+                                <p>Autore: <strong>{{$post->user->name}}</strong>
+                                    @if ($post->category->id !== 1)
+                                    <span class="bg-primary p-1 rounded">#{{ $post->category->name }}</span>
+                                    @endif
+                                </p>
                             </div>
                             <div class="d-flex">
                                 @include('partials.destroybtn')

@@ -10,14 +10,18 @@
                     {{ $post->title }}
                 </div>
                 <div class="card-body">
-                    Autore: {{ Auth::user()->name }}
+                    <p>Autore: <strong>{{$post->user->name}}</strong></p>
                     <p>{{ $post->content }}</p>
+                    <hr />
+                    @if ($post->category->id !== 1)
+                    <span class="bg-primary p-1 rounded">#{{ $post->category->name }}</span>
+                    @endif
                     <div class="small text-end">
                         @if($post->created_at==$post->updated_at)
-                            Pubblicato il {{$post->created_at->format('d-m-Y')}}
+                            <span>Pubblicato il {{$post->created_at->format('d-m-Y H:m')}}</span>
                             @else
-                            Modificato il {{$post->updated_at->format('d-m-Y')}}
-                        @endif
+                            <span>Modificato il {{$post->updated_at->format('d-m-Y H:m')}}</span>
+                            @endif
                     </div>
                 </div>
                 <div class="card-footer d-flex">

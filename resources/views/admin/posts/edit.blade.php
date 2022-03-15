@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8 border p-5">
             <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" class="row g-3 add_form">
                 @csrf
                 @method('PUT')
@@ -13,6 +13,15 @@
                     @error('title')
                     <div class="invalid-feedback bg-warning p-2">{{$message}}</div>
                     @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Categoria</label>
+                    <select name="category_id" class="form-select">
+                      @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @if ($post->category_id === $category->id) selected @endIf>
+                          {{ $category->name }}</option>
+                      @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="content" class="form-label">Post</label>

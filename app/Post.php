@@ -9,7 +9,16 @@ class Post extends Model
     protected $fillable=[
         "title",
         "content",
-        "author",
+        "user_id",
+        "category_id"
         // "slug",
     ];
+
+    public function user() {
+        return $this->belongsTo("App\User");
+      }
+    
+      public function category() {
+        return $this->belongsTo("App\Category");
+      }
 }
