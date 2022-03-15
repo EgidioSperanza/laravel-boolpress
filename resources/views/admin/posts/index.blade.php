@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card bg-dark text-white border-light">
                 <div class="card-header d-flex">
                     Posts
                     <a href="{{route('admin.posts.create')}}" class="nav-link ms-auto">
@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <ul class="list-group">
                         @foreach ( $posts as $post )
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white border-secondary">
                             <div>
                                 <h3>{{$post->title}} </h3>
                                 <p>Autore: <strong>{{$post->user->name}}</strong>
