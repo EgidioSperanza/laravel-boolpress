@@ -21,14 +21,14 @@
                                     @if ($post->category->id !== 1)
                                     <p>Categoria: <span class="bg-light text-dark p-1 rounded">{{ $post->category->name }}</span></p>
                                     @endif
-                                    @if ($post->tags->count()!=0)
                                     <div class="my-3">
-                                      Tags:
-                                      @foreach ($post->tags as $tag)
-                                      <span class="bg-primary p-1 rounded me-1">{{$tag->name }}</span>
-                                      @endforeach
+                                        Tags:
+                                        @forelse ($post->tags as $tag)
+                                            <span class="bg-primary p-1 rounded me-1">{{ $tag->name }}</span>
+                                            @empty
+                                            <span class="btn btn-outline-light p-1 rounded">Nessun Tag</span>
+                                        @endforelse
                                     </div>
-                                  @endif                                 
                                 </p>
                             </div>
                             <div class="d-flex">

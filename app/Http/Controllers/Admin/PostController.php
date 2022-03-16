@@ -113,11 +113,7 @@ class PostController extends Controller
 
         $post->update($data);
 
-        if (key_exists("tags", $data) && count($data["tags"])!=0) {
-            $post->tags()->sync($data["tags"]);
-        }else{
-            $post->tags()->detach();
-        }
+       key_exists("tags", $data) && count($data["tags"])!=0 ? $post->tags()->sync($data["tags"]) : $post->tags()->sync([]);
 
         return redirect()->route('admin.posts.show', $post->slug);
     }
