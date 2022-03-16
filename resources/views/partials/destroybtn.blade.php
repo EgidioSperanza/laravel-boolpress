@@ -1,7 +1,7 @@
 @if(Auth::user()->id===$post->user_id)
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Elimina
+<button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="Elimina">
+  <i class="bi bi-trash"></i>
   </button>
   
   <!-- Modal -->

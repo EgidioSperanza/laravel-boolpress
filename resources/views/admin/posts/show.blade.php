@@ -16,14 +16,12 @@
                     @if ($post->category->id !== 1)
                     <p>Categoria: <span class="bg-light text-dark p-1 rounded">{{ $post->category->name }}</span></p>
                     @endif
-                    <div class="my-3">
                     Tags:
                         @forelse ($post->tags as $tag)
                             <span class="bg-primary p-1 rounded me-1">{{ $tag->name }}</span>
                             @empty
                             <span class="btn btn-outline-light p-1 rounded">Nessun Tag</span>
                         @endforelse
-                    </div>
                     <div class="small text-end">
                         @if($post->created_at==$post->updated_at)
                             <span>Pubblicato il {{$post->created_at->format('d-m-Y')}} alle {{$post->created_at->format('H:m')}}</span>
@@ -34,7 +32,9 @@
                 </div>
                 <div class="card-footer d-flex">
                     <div class=" ms-auto">
-                        <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary me-2">Indietro</a>
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary me-2" title="Indietro">
+                            <i class="bi bi-arrow-left-square"></i>
+                        </a>
                         @include('partials.destroybtn')
                         @include('partials.updatebtn')
                     </div>
