@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card">
+        <div class="card border p-5 bg-dark text-light">
           <div class="card-header d-flex">
             Crea un nuovo post
           </div>
@@ -32,6 +32,19 @@
                   @endforeach
                 </select>
               </div>
+              <div class="mb-3">
+                <p>Tags</p>
+                @foreach ($tags as $tag)
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="{{ $tag->id }}"
+                      id="tag_{{ $tag->id }}" name="tags[]">
+                    <label class="form-check-label text-light" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                  </div>
+                @endforeach
+                @error('tags')
+                  <div class="text-red">{{ $message }}</div>
+                @enderror
+              </div>
               {{-- contenuto del post --}}
               <div class="mb-3">
                 <label>Contenuto</label>
@@ -42,7 +55,7 @@
                 @enderror
               </div>
 
-              <div class="form-group">
+              <div class="card-footer form-group">
                   <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Annulla</a>
                   <button type="reset" class="btn btn-secondary">Cancella</button>
                   <button type="submit" class="btn btn-success">Salva post</button>

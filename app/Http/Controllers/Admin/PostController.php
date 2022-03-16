@@ -6,6 +6,7 @@ use App\Category;
 use App\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -32,8 +33,12 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', [
+            "categories" => $categories,
+            "tags" => $tags,
+        ]);
     }
 
     /**
@@ -54,7 +59,11 @@ class PostController extends Controller
         $post->user_id = Auth::user()->id;
 
         $post->save();
-        
+
+        if (key_exists("tags", $data)) {
+            $post->tags()->attach($data["tags"]);
+        }
+
         return redirect()->route('admin.posts.show', $post->slug);
     }
 
@@ -67,6 +76,7 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::where('slug', $slug)->first();
+        $tags = Tag::all();
 
         return view('admin.posts.show', compact('post'));
     }
@@ -81,10 +91,12 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.edit', [
             "post" => $post,
-            "categories" => $categories
+            "categories" => $categories,
+            "tags" => $tags,
         ]);
     }
 
@@ -101,6 +113,12 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if (key_exists("tags", $data)) {
+            $post->tags()->sync($data["tags"]);
+        }else{
+            $post->tags()->detach();
+        }
+
         return redirect()->route('admin.posts.show', $post->slug);
     }
 
@@ -112,6 +130,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+            $post->tags()->detach();
+
             $post->delete();
     
             return redirect()->route('admin.posts.index');

@@ -24,6 +24,19 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <p>Tags</p>
+                    @foreach ($tags as $tag)
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="{{ $tag->id }}"
+                          id="tag_{{ $tag->id }}" name="tags[]" {{ $post->tags->contains($tag) ? 'checked' : '' }}>
+                        <label class="form-check-label text-light" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                      </div>
+                    @endforeach
+                    @error('tags')
+                      <div class="text-red">{{ $message }}</div>
+                    @enderror
+                  </div>
+                <div class="mb-3">
                     <label for="content" class="form-label">Post</label>
                     <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" aria-describedby="helpId" placeholder="Inizia a scrivere qualcosa...">{{$post->content}}
                     </textarea>
