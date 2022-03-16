@@ -14,13 +14,13 @@
                     <p>{{ $post->content }}</p>
                     <hr />
                     @if ($post->category->id !== 1)
-                    <span class="bg-primary p-1 rounded">#{{ $post->category->name }}</span>
+                    <p>Categoria: <span class="bg-light text-dark p-1 rounded">{{ $post->category->name }}</span></p>
                     @endif
                     <div class="small text-end">
                         @if($post->created_at==$post->updated_at)
-                            <span>Pubblicato il {{$post->created_at->format('d-m-Y H:m')}}</span>
+                            <span>Pubblicato il {{$post->created_at->format('d-m-Y')}} alle {{$post->created_at->format('H:m')}}</span>
                             @else
-                            <span>Modificato il {{$post->updated_at->format('d-m-Y H:m')}}</span>
+                            <span>Modificato il {{$post->updated_at->format('d-m-Y')}} alle {{$post->updated_at->format('H:m')}}</span>
                             @endif
                     </div>
                 </div>

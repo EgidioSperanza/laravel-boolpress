@@ -19,7 +19,7 @@
                                 <h3>{{$post->title}} </h3>
                                 <p>Autore: <strong>{{$post->user->name}}</strong>
                                     @if ($post->category->id !== 1)
-                                    <span class="bg-primary p-1 rounded">#{{ $post->category->name }}</span>
+                                    <p>Categoria: <span class="bg-light text-dark p-1 rounded">{{ $post->category->name }}</span></p>
                                     @endif
                                 </p>
                             </div>

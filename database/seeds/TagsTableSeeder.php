@@ -1,9 +1,10 @@
 <?php
 
-use App\Category;
+use App\Tag;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
-class CategoriesTableSeeder extends Seeder
+class TagsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,8 +13,7 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = [
-            'Non Specificato',
+        $tags = [
             'Hardware',
             'Software', 
             'IT',
@@ -24,12 +24,14 @@ class CategoriesTableSeeder extends Seeder
             'VUE',
         ];
 
-        foreach ($categories as $category){
+        Tag::truncate();
 
-            $newCategory = new Category();
-            $newCategory->name = $category;
-            $newCategory->save();
+        foreach ($tags as $tag){
+
+            $newTag = new Tag();
+            $newTag->name = $tag;
+            $newTag->slug = Str::slug($tag).'-tag';
+            $newTag->save();
         }
-        
     }
 }
