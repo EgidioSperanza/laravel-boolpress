@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    use Carbon\CarbonInterface;
+@endphp
 
 @section('content')
 <div class="container">
@@ -22,13 +24,16 @@
                             @empty
                             <span class="btn btn-outline-light p-1 rounded">Nessun Tag</span>
                         @endforelse
-                    <div class="small text-end">
-                        @if($post->created_at==$post->updated_at)
-                            <span>Pubblicato il {{$post->created_at->format('d-m-Y')}} alle {{$post->created_at->format('H:m')}}</span>
+                        <div class="small text-end">
+                            @if ($post->created_at->diffInHours(now())>=12)
+                            <div>Pubblicato il {{$post->created_at->format('d/m/Y \a\l\l\e H:m')}}</div>
                             @else
-                            <span>Modificato il {{$post->updated_at->format('d-m-Y')}} alle {{$post->updated_at->format('H:m')}}</span>
+                            <div>Pubblicato {{$post->created_at->locale('it')->diffForHumans(['options' => 0])}}</div>
                             @endif
-                    </div>
+                            @if ($post->updated_at->diffInSeconds($post->created_at)>0)
+                            <div>Ultima Modifica: {{$post->updated_at->locale('it')->diffForHumans(['options' => 0])}}</div>
+                            @endif
+                        </div>
                 </div>
                 <div class="card-footer d-flex">
                     <div class=" ms-auto">
