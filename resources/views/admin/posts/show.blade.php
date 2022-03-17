@@ -13,7 +13,12 @@
                 </div>
                 <div class="card-body">
                     <p>Autore: <strong>{{$post->user->name}}</strong></p>
-                    <p>{{ $post->content }}</p>
+                    <div class="d-flex">
+                        @if ($post->url!=null)
+                            <img class="img-fluid img-thumbnail post-img me-2" src="{{$post->url}}" alt="Images for {{$post->title}} post">
+                        @endif
+                        <p>{{ $post->content }}</p>
+                    </div>
                     <hr />
                     @if ($post->category->id !== 1)
                     <p>Categoria: <span class="bg-light text-dark p-1 rounded">{{ $post->category->name }}</span></p>

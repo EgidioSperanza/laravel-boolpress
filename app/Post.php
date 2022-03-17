@@ -10,7 +10,8 @@ class Post extends Model
         "title",
         "content",
         "user_id",
-        "category_id"
+        "category_id",
+        "url"
         // "slug",
     ];
 

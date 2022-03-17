@@ -15,6 +15,13 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                  <label for="url" class="form-label">Image Url</label>
+                  <input type="text" class="form-control @error('url') is-invalid @enderror" name="url" id="url" aria-describedby="helpId" placeholder="Image Url" value="{{$post->url}}">
+                  @error('url')
+                  <div class="invalid-feedback bg-warning p-2">{{$message}}</div>
+                  @enderror
+              </div>
+                <div class="mb-3">
                     <label for="category_id" class="form-label">Categoria</label>
                     <select name="category_id" class="form-select">
                       @foreach ($categories as $category)
