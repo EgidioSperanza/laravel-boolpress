@@ -3,9 +3,11 @@
     <VueNavbar></VueNavbar>
     <div class="container mt-4">
         <h1>Elenco dei posts di BoolPress</h1>
+        <PaginationNav :pagination="pagination" @fetchPosts="fetchPosts"></PaginationNav>
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <PostCard v-for="post of posts" :key="post.id" :post="post"></PostCard>
         </div>
+        <PaginationNav :pagination="pagination" @fetchPosts="fetchPosts"></PaginationNav>
     </div>
   </div>
 </template>
@@ -13,10 +15,12 @@
 <script>
 import VueNavbar from "../components/VueNavbar.vue";
 import PostCard from "../components/PostCard.vue";
+import PaginationNav from "../components/PaginationNav.vue";
+
 import axios from "axios";
 
 export default {
-  components: { VueNavbar, PostCard },
+  components: { VueNavbar, PostCard, PaginationNav },
   data() {
     return {
         posts: [],

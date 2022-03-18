@@ -13,11 +13,9 @@ class PostController extends Controller
     use SlugGenerator;
 
     public function index() {
-        $posts = Post::orderBy('created_at', 'DESC')->get();
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(6);
         $posts->load('user', 'category', 'tags');
-        return response()->json([
-            'data' => $posts,
-        ]);
+        return response()->json($posts);
     }
 
     public function store(PostStoreRequest $request) {
@@ -26,7 +24,7 @@ class PostController extends Controller
 
         $post = new Post();
         $post->fill($data);
-        //temporaneamente assegnamo id creatore
+        //TODO:temporaneamente assegnamo id creatore
         $post->user_id = 1;
         $post->slug = $this->generateSlug($post->title);
         $post->save();
