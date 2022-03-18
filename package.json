@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.2",
-        "bootstrap-icons": "^1.8.1"
+        "bootstrap-icons": "^1.8.1",
+        "moment": "^2.29.1"
     }
 }

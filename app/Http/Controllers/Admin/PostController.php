@@ -7,6 +7,7 @@ use App\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
 use App\Tag;
+use App\Traits\SlugGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use \Carbon\CarbonInterface;
 
 class PostController extends Controller
 {
+    use SlugGenerator;
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +24,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('created_at', 'DESC')->get();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -133,26 +135,6 @@ class PostController extends Controller
             $post->delete();
     
             return redirect()->route('admin.posts.index');
-    }
-
-    protected function generateSlug($slugReference){
-        $slug = Str::slug($slugReference);
-
-        $exists = Post::where("slug", $slug)->first();
-        $counter = 1;
-
-        while ($exists) {
-            $newSlug = $slug . "-" . $counter;
-            $counter++;
-
-            $exists = Post::where("slug", $newSlug)->first();
-
-            if (!$exists) {
-            $slug = $newSlug;
-            }
-        }
-
-        return $slug;
     }
 }
 

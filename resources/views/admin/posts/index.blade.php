@@ -1,7 +1,4 @@
 @extends('layouts.app')
-@php
-    use Carbon\CarbonInterface;
-@endphp
 
 @section('content')
 <div class="container">
