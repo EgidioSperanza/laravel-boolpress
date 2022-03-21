@@ -26282,17 +26282,22 @@ var render = function () {
   return _c("div", [
     _c("h1", [_vm._v(_vm._s(_vm.post.title))]),
     _vm._v(" "),
-    _c("h3", [_vm._v("Autore: " + _vm._s(_vm.post.user.name))]),
+    _vm.post.user_id
+      ? _c("h3", [_vm._v("Autore: " + _vm._s(_vm.post.user.name))])
+      : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "d-flex ms-2" }, [
+    _c("div", { staticClass: "d-flex" }, [
       _vm.post.url
-        ? _c("img", { attrs: { src: _vm.post.url, alt: "post.title" } })
+        ? _c("img", {
+            staticClass: "me-2",
+            attrs: { src: _vm.post.url, alt: "post.title" },
+          })
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "ms-2" }, [
+      _c("div", [
         _c("div", { domProps: { innerHTML: _vm._s(_vm.post.content) } }),
         _vm._v(" "),
-        _vm.post.category_id !== 1
+        _vm.post.category_id && _vm.post.category_id !== 1
           ? _c("div", { staticClass: "mt-4" }, [
               _vm._v("\n            Categoria:\n            "),
               _c("span", { staticClass: "bg-light text-dark p-1 rounded" }, [
@@ -26305,7 +26310,7 @@ var render = function () {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.post.tags.length > 0
+        _vm.post.tags && _vm.post.tags.length > 0
           ? _c(
               "div",
               { staticClass: "mt-4" },
