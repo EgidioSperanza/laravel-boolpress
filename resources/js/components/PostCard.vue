@@ -21,18 +21,16 @@
             <span class="bg-primary p-1 rounded me-1" v-for="tag of post.tags" :key="tag.id">{{tag.name}}</span>
             <hr />
         </div>
-        <div class="small text-end">
-            <span class="d-block">Pubblicato {{getCreation(post)}}</span>
-            <span v-if="isUpdated(post)">Modificato {{getUpdate(post)}}</span>
-        </div>
+        <PostDate :post="post"></PostDate>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment';
+import PostDate from './PostDate.vue'
 export default {
+  components: { PostDate },
   props: {
     post: Object,
   },
@@ -43,23 +41,6 @@ export default {
     getPostUrl(post) {
       return post.url !== null ? post.url : 'https://picsum.photos/400/200'
     },
-    getCreation(post) {
-        moment.locale('it');
-        // moment(post.created_at).fromNow()
-        if(moment().diff(post.created_at, 'hours')>=12){
-            return "il " + moment(post.created_at).format('DD/MM/YYYY [alle] HH:mm');
-        }else{
-            return moment(post.created_at).fromNow()
-        }
-    },
-    isUpdated(post){
-        if(moment(post.updated_at) > moment(post.created_at)) {
-            return true
-        }
-    },
-    getUpdate(post){
-        return moment(post.updated_at).fromNow()
-    }
   },
 }
 </script>
