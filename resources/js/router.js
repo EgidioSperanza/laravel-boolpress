@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '//', component: Home, name: "home.index", meta: {title: "Home", linkText: "Home"} },
+        { path: '/', component: Home, name: "home.index", meta: {title: "Home", linkText: "Home"} },
         { path: '/contacts', component: Contacts, name: "contacts.index", meta: {title: "Contattaci", linkText: "Contatti"} },
         { path: '/post/:post', component: Show, name: "post.show", meta: { title: "Dettagli post" } },
         { path: "*", component: Error, name: "error", meta: { title: "Error" } } 
