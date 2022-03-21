@@ -2,7 +2,7 @@
   <div class="col">
     <div class="card bg-dark border-light h-100">
         <div class="card-header text-end border-bottom mb-2"> 
-            <a name="" id="" class="btn btn-primary" href="#" role="button">Button</a>
+          <router-link class="btn btn-primary text-light" :to="{ name:'post.show', params: { post: post.slug } }">Dettagli</router-link>
             <h3 class="card-title text-start mt-2">Titolo: {{ post.title }}</h3>
         </div>
       <img
@@ -13,8 +13,14 @@
       <div class="card-body border-bottom">
         <h4 class="card-title">Autore: {{ post.user.name }}</h4>
         <p class="card-text">{{ post.content }}</p>
+        <p v-if="post.category_id !== 1" >Categoria: <span class="bg-light text-dark p-1 rounded">{{ post.category.name }}</span></p>
       </div>
       <div class="card-footer">
+        <div v-if="post.tags.length>0" class="mt-2">
+            Tags:
+            <span class="bg-primary p-1 rounded me-1" v-for="tag of post.tags" :key="tag.id">{{tag.name}}</span>
+            <hr />
+        </div>
         <div class="small text-end">
             <span class="d-block">Pubblicato {{getCreation(post)}}</span>
             <span v-if="isUpdated(post)">Modificato {{getUpdate(post)}}</span>
@@ -29,6 +35,9 @@ import moment from 'moment';
 export default {
   props: {
     post: Object,
+  },
+  data() {
+    return {};
   },
   methods: {
     getPostUrl(post) {
