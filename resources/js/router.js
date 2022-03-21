@@ -13,7 +13,7 @@ const router = new VueRouter({
         { path: '/', component: Home, name: "home.index", meta: {title: "Home", linkText: "Home"} },
         { path: '/contacts', component: Contacts, name: "contacts.index", meta: {title: "Contattaci", linkText: "Contatti"} },
         { path: '/post/:post', component: Show, name: "post.show", meta: { title: "Dettagli post" } },
-        { path: "*", component: Error, name: "error", meta: { title: "Error" } } 
+        { path: '/404', alias: '*', component: Error, name: "error", meta: { title: "Error" } },
     ]
 })
 

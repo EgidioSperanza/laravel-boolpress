@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="border border-ligth rounded p-4">
     <h1>{{ post.title }}</h1>
     <h3 v-if="post.user_id">Autore: {{ post.user.name }}</h3>
-    <div class="d-flex border border-ligth rounded p-4">
-      <img v-if="post.url" :src="post.url" alt="post.title" class="me-2"/>
+    <div class="d-flex">
+      <img v-if="post.url" :src="post.url" alt="post.title" class="me-2 border border-primary"/>
       <div class="me-2">
         <div v-html="post.content">
         </div>
@@ -47,7 +47,7 @@ export default {
         const resp = await axios.get('/api/post/' + this.$route.params.post)
         this.post = resp.data
       } catch (er) {
-        this.$router.replace({ name: 'error' })
+        this.$router.replace({ name: 'error'})
       }
     },
   },
