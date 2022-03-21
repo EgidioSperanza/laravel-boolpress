@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
 use App\Post;
+use App\Tag;
 use App\Traits\SlugGenerator;
 use Illuminate\Http\Request;
 
