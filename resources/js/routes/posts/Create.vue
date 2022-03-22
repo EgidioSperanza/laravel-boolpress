@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card border p-5 bg-dark text-light">
+        <div class="card border p-5 bg-dark text-light" v-if="!postSubmitted">
           <div class="card-header d-flex">
             Crea un nuovo post
           </div>
@@ -34,35 +34,32 @@
               </div>
               <div class="mb-3">
                 <label for="category_id" class="form-label">Categoria</label>
-                <select name="category_id" class="form-select">
+                <select name="category_id" class="form-select"  v-model="newPost.category_id">
                   <option v-for="category in categories" :key="category.id" :value="category.id">
                     {{ category.name }}
                   </option>
                 </select>
               </div>
-              <!-- <div class="mb-3">
+              <div class="mb-3">
                 <p>Tags</p>
-                @foreach ($tags as $tag)
-                <div class="form-check form-check-inline">
+                <div v-for="tag in tagsList" :key="tag.id" class="form-check form-check-inline">
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    value="{{ $tag->id }}"
-                    id="tag_{{ $tag->id }}"
+                    :value="tag.id"
+                    :id="`tag_{{tag.id}}`"
                     name="tags[]"
+                    v-model="newPost.tags"
                   />
                   <label
                     class="form-check-label text-light"
-                    for="tag_{{ $tag->id }}"
+                    :for="`tag_{{tag.id}}`"
                   >
-                    {{ $tag->name }}
+                    {{ tag.name }}
                   </label>
                 </div>
-                @endforeach @error('tags')
-                <div class="text-red">{{ $message }}</div>
-                @enderror
-              </div> -->
-              <div class="mb-3">
+              </div>
+                <div class="mb-3">
                 <label>Contenuto</label>
                 <textarea
                   name="content"
@@ -74,7 +71,6 @@
                   ></textarea
                 >
               </div>
-
               <div class="card-footer form-group">
                 <router-link
                   to="/"
@@ -90,6 +86,13 @@
             </form>
           </div>
         </div>
+        <div v-else class="alert alert-success py-5">
+          <h4>Grazie per averci contattato.</h4>
+          <p class="lead">
+            Il tuo Post è stato inviato correttamente
+          </p>
+            <router-link class="btn btn-primary mb-2 text-light" to="/">Torna alla Home</router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -104,37 +107,58 @@ export default {
     },
   data() {
     return {
+      postSubmitted:false,
+      user: null,
       categories:{},
-      tags:{},
+      tagsList:{},
         newPost : {
+            user_id: "",
             title: "",
             content: "",
             url: "",
             category_id: 1,
+            tags: [],
         }
     }
   },
   methods: {
     createPost() {
-      
-      axios.post('/api/posts', this.newPost);
+      try{
+        axios.post('/api/posts', this.newPost);
+
+        this.postSubmitted=true;
+      }
+      catch(er){
+        console.log(er)
+      }
     },
 
     async fetchDetails(category = 1) {
       try{
         const resp = await axios.get("/api/create");
         this.categories = resp.data.categories;
-        this.tags = resp.data.tags;
-        console.table(this.categories, this.tags)
+        this.tagsList = resp.data.tags;
+
       }catch (er) {
         console.log(er);
       } 
     },
+        getStoredUser() {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        this.user = JSON.parse(storedUser);
+      } else {
+        this.user = null;
+      }
+    },
   },
     mounted() {
-    this.fetchDetails();
-  },
-
+      this.fetchDetails();
+      this.getStoredUser();
+      window.addEventListener("storedUserChanged", () => {
+      this.getStoredUser();
+    })
+  }
 }
 </script>
 

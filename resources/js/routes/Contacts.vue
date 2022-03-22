@@ -31,13 +31,6 @@
       </div>
       <button type="submit" class="btn btn-success" @click="contactSubmit">Invia!</button>
     </div>
-    <div v-else class="alert alert-danger py-5">
-      <h4>Riprova</h4>
-      <p class="lead">
-        A causa di un errore non è stato possibile inviare la sua richiesta.
-      </p>
-      <span>{{dbErrors}}</span>
-    </div>
     <div v-else class="alert alert-success py-5">
       <h4>Grazie per averci contattato.</h4>
       <p class="lead">

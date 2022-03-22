@@ -9,6 +9,7 @@ use App\Post;
 use App\Tag;
 use App\Traits\SlugGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -34,9 +35,8 @@ class PostController extends Controller
 
         $post = new Post();
         $post->fill($data);
-        //TODO:temporaneamente assegnamo id creatore
-        $post->user_id = 1;
         $post->slug = $this->generateSlug($post->title);
+        $post->user_id = Auth::user()->id;
         $post->save();
 
         if (key_exists("tags", $data)) {

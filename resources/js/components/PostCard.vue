@@ -8,7 +8,7 @@
       <img
         :src="getPostUrl(post)"
         class="card-img-top"
-        :alt="`Image for {{post.title}} post`"
+        :alt="post.title"
       />
       <div class="card-body border-bottom">
         <h4 class="card-title">Autore: {{ post.user.name }}</h4>

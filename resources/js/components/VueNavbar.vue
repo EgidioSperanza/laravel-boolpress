@@ -25,7 +25,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link text-light" href="/login" v-if="!user"> Login </a>
-            <a class="nav-link text-light" href="/admin" v-else> {{ user.name}} </a>
+            <a class="nav-link text-light" href="/login" v-else> {{user.name}} </a>
           </li>
         </ul>
       </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -46,10 +48,19 @@ export default {
         try {
         const resp = await axios.get('/api/user/')
         this.user = resp.data
+
+        localStorage.setItem("user", JSON.stringify(resp.data));
+
+        window.dispatchEvent(new CustomEvent("storedUserChanged"));
       } catch (er) {
         console.log("Utente non Loggato")
-      }
+        localStorage.removeItem("user");
 
+        window.dispatchEvent(new CustomEvent("storedUserChanged"));
+      }
+    },
+    logoutSubmit() {
+      axios.post(route('logout'));
     }
   },
   mounted() {
