@@ -15,7 +15,7 @@ const router = new VueRouter({
         { path: '/contacts', component: Contacts, name: "contacts.index", meta: {title: "Contattaci", linkText: "Contatti"} },
         { path: '/create', component: Create, name: "post.store", meta: {title: "Nuovo Post", linkText: "Scrivi Post"} },
         { path: '/post/:post', component: Show, name: "post.show", meta: { title: "Dettagli post" } },
-        { path: '/404', alias: '*', component: Error, name: "error", meta: { title: "Error" } },
+        { path: '/404', alias: '*', component: Error, name: "error", meta: { title: 'Error' } },
     ]
 })
 

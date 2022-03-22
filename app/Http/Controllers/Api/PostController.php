@@ -20,6 +20,14 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
+    public function create()
+    {
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return response()->json(['categories'=>$categories,'tags'=>$tags]);
+    }
+
     public function store(PostStoreRequest $request) {
 
         $data = $request->validated();

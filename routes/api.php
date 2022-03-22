@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get('/posts', 'Api\PostController@index');
 Route::get('/post/{slug}', 'Api\PostController@show');
+Route::get('/create', 'Api\PostController@create');
 Route::post('/posts', 'Api\PostController@store');
+Route::post('/contacts', 'Api\ContactController@store');

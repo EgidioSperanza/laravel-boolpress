@@ -24,7 +24,8 @@
             <router-link class="nav-link text-light" :to="!route.path ? '/' : route.path">{{route.meta.linkText}}</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="/login"> Login </a>
+            <a class="nav-link text-light" href="/login" v-if="!user"> Login </a>
+            <a class="nav-link text-light" href="/admin" v-else> {{ user.name}} </a>
           </li>
         </ul>
       </div>
@@ -36,11 +37,24 @@
 export default {
   data() {
     return {
-      routes:[]
+      routes:[],
+      user:null,
     };
+  },
+  methods: {
+    async fetchUser() {
+        try {
+        const resp = await axios.get('/api/user/')
+        this.user = resp.data
+      } catch (er) {
+        console.log("Utente non Loggato")
+      }
+
+    }
   },
   mounted() {
     this.routes=this.$router.getRoutes().filter((route) => !!route.meta.linkText);
+    this.fetchUser();
   },
 }
 </script>

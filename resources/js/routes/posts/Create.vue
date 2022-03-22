@@ -32,14 +32,14 @@
                   v-model="newPost.url"
                 />
               </div>
-              <!-- <div class="mb-3">
+              <div class="mb-3">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" class="form-select">
                   <option v-for="category in categories" :key="category.id" :value="category.id">
                     {{ category.name }}
                   </option>
                 </select>
-              </div> -->
+              </div>
               <!-- <div class="mb-3">
                 <p>Tags</p>
                 @foreach ($tags as $tag)
@@ -97,12 +97,15 @@
 
 <script>
 import axios from "axios";
+
 export default {
     props:{
         post:Object,
     },
   data() {
     return {
+      categories:{},
+      tags:{},
         newPost : {
             title: "",
             content: "",
@@ -111,12 +114,27 @@ export default {
         }
     }
   },
-methods: {
-     createPost() {
-        
-        axios.post('/api/posts', this.newPost);
+  methods: {
+    createPost() {
+      
+      axios.post('/api/posts', this.newPost);
+    },
+
+    async fetchDetails(category = 1) {
+      try{
+        const resp = await axios.get("/api/create");
+        this.categories = resp.data.categories;
+        this.tags = resp.data.tags;
+        console.table(this.categories, this.tags)
+      }catch (er) {
+        console.log(er);
+      } 
     },
   },
+    mounted() {
+    this.fetchDetails();
+  },
+
 }
 </script>
 

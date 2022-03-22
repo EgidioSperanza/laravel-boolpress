@@ -28,7 +28,7 @@ Route::middleware("auth")
     });
 
     Route::get('/guest.home', 'Auth\LoginController@logout');
-
+               
 Route::get("{any?}", function() {
     return view("guest.home");
 })->where("any", ".*");
