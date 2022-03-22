@@ -43,6 +43,7 @@ export default {
         const resp = await axios.get("/api/posts?page=" + page);
         this.pagination = resp.data;
         this.posts = resp.data.data;
+        this.$router.push("page"+page)
     }catch (er) {
         console.log(er);
         } finally {
