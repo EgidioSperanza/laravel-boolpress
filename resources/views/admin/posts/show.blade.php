@@ -12,7 +12,7 @@
                     <p>Autore: <strong>{{$post->user->name}}</strong></p>
                     <div class="d-flex">
                         @if ($post->url!=null)
-                            <img class="img-fluid img-thumbnail post-img me-2" src="{{$post->url}}" alt="Images for {{$post->title}} post">
+                            <img class="img-fluid img-thumbnail post-img me-2" src="{{ asset('storage/' . $post->url) }}" alt="Images for {{$post->title}} post">
                         @endif
                         <p>{{ $post->content }}</p>
                     </div>

@@ -6,7 +6,7 @@
             <h3 class="card-title text-start mt-2">Titolo: {{ post.title }}</h3>
         </div>
       <img
-        :src="getPostUrl(post)"
+        :src="post.url"
         class="card-img-top"
         :alt="post.title"
       />
@@ -38,9 +38,6 @@ export default {
     return {};
   },
   methods: {
-    getPostUrl(post) {
-      return post.url !== null ? post.url : 'https://picsum.photos/400/200'
-    },
   },
 }
 </script>

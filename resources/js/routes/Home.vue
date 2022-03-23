@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Elenco dei posts di BoolPress</h1>
-        <PaginationNav :pagination="pagination" @fetchPosts="fetchPosts"></PaginationNav>
+        <PaginationNav :pagination="pagination" :emptyAlert=true @fetchPosts="fetchPosts"></PaginationNav>
         <button v-if="loading" class="btn btn-primary mb-2 text-light" type="button" disabled>
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Loading...
@@ -9,7 +9,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <PostCard v-for="post of posts" :key="post.id" :post="post"></PostCard>
         </div>
-        <PaginationNav :pagination="pagination" @fetchPosts="fetchPosts"></PaginationNav>
+        <PaginationNav :pagination="pagination" :emptyAlert=false @fetchPosts="fetchPosts"></PaginationNav>
     </div>
 </template>
 
@@ -43,7 +43,6 @@ export default {
         const resp = await axios.get("/api/posts?page=" + page);
         this.pagination = resp.data;
         this.posts = resp.data.data;
-        this.$router.push("page"+page)
     }catch (er) {
         console.log(er);
         } finally {

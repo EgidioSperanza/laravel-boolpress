@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use \Carbon\CarbonInterface;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -62,7 +63,11 @@ class PostController extends Controller
         $post->slug = $slug;
         $post->user_id = Auth::user()->id;
 
-        $post->save();
+        if (key_exists("url", $data)) {
+            $post->url = Storage::put("postImg", $data["url"]);
+          }
+      
+          $post->save();
 
         if (key_exists("tags", $data)) {
             $post->tags()->attach($data["tags"]);
@@ -117,6 +122,17 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if (key_exists("url", $data)) {
+            if ($post->url) {
+              Storage::delete($post->coverImg);
+            }
+      
+            $url = Storage::put("postImg", $data["url"]);
+      
+            $post->url = $url;
+            $post->save();
+        }
+
        key_exists("tags", $data) && count($data["tags"])!=0 ? $post->tags()->sync($data["tags"]) : $post->tags()->sync([]);
 
         return redirect()->route('admin.posts.show', $post->slug);
@@ -131,6 +147,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
             $post->tags()->detach();
+
+            if ($post->url) {
+                Storage::delete($post->url);
+              }
 
             $post->delete();
     

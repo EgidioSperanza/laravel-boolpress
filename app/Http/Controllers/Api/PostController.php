@@ -18,6 +18,14 @@ class PostController extends Controller
     public function index() {
         $posts = Post::orderBy('created_at', 'DESC')->paginate(6);
         $posts->load('user', 'category', 'tags');
+
+        $posts->each(function ($post) {
+            if ($post->url) {
+              $post->url = asset("storage/" . $post->url);
+            }else{
+              $post->url = "https://via.placeholder.com/1024x480";
+            }
+          });
         return response()->json($posts);
     }
 
@@ -54,6 +62,12 @@ class PostController extends Controller
         if (!$post) {
             abort(404);
           }
+          
+        if ($post->url) {
+            $post->url = asset("storage/" . $post->url);
+        }else{
+            $post->url = "https://via.placeholder.com/1024x480";
+        }
 
         return response()->json($post);
     }

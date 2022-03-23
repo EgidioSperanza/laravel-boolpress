@@ -4,7 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 border p-5">
-            <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" class="row g-3 add_form  text-light">
+            <form action="{{ route('admin.posts.update', $post->id) }}" 
+              method="POST" 
+              class="row g-3 add_form  text-light" 
+              enctype="multipart/form-data"
+              >
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -15,34 +19,40 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="url" class="form-label">Image Url</label>
-                  <input type="text" class="form-control @error('url') is-invalid @enderror" name="url" id="url" aria-describedby="helpId" placeholder="Image Url" value="{{$post->url}}">
+                  <label for="url" class="form-label">Immagine del Post</label>
+                  <input type="file" class="form-control @error('url') is-invalid @enderror" name="url" id="url" aria-describedby="helpId" placeholder="Image Url">
                   @error('url')
                   <div class="invalid-feedback bg-warning p-2">{{$message}}</div>
                   @enderror
               </div>
-                <div class="mb-3">
-                    <label for="category_id" class="form-label">Categoria</label>
-                    <select name="category_id" class="form-select">
-                      @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" @if ($post->category_id === $category->id) selected @endIf>
-                          {{ $category->name }}</option>
-                      @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <p>Tags</p>
-                    @foreach ($tags as $tag)
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="{{ $tag->id }}"
-                          id="tag_{{ $tag->id }}" name="tags[]" {{ $post->tags->contains($tag) ? 'checked' : '' }}>
-                        <label class="form-check-label text-light" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
-                      </div>
+              @if($post->url!==null)
+              <div class="d-flex justify-content-center align-items-center">
+                <img class="img-fluid img-thumbnail post-img me-2" src="{{ asset('storage/' . $post->url) }}" alt="Images for {{$post->title}} post">
+                <p>Anteprima Immagine Presente</p>
+              </div>
+              @endif
+              <div class="mb-3">
+                  <label for="category_id" class="form-label">Categoria</label>
+                  <select name="category_id" class="form-select">
+                    @foreach ($categories as $category)
+                      <option value="{{ $category->id }}" @if ($post->category_id === $category->id) selected @endIf>
+                        {{ $category->name }}</option>
                     @endforeach
-                    @error('tags')
-                      <div class="text-red">{{ $message }}</div>
-                    @enderror
-                  </div>
+                  </select>
+              </div>
+              <div class="mb-3">
+                  <p>Tags</p>
+                  @foreach ($tags as $tag)
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" value="{{ $tag->id }}"
+                        id="tag_{{ $tag->id }}" name="tags[]" {{ $post->tags->contains($tag) ? 'checked' : '' }}>
+                      <label class="form-check-label text-light" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                    </div>
+                  @endforeach
+                  @error('tags')
+                    <div class="text-red">{{ $message }}</div>
+                  @enderror
+                </div>
                 <div class="mb-3">
                     <label for="content" class="form-label">Post</label>
                     <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" aria-describedby="helpId" placeholder="Inizia a scrivere qualcosa...">{{$post->content}}
