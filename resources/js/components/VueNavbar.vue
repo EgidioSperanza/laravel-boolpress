@@ -63,7 +63,17 @@ export default {
       }
     },
     userLogout() {
+      try{
+      axios.post("logout").then(response => { 
         window.location.replace("/logout");
+        })
+    }catch (er) {
+        console.log(er);
+        } finally {
+            setTimeout(() => {
+              window.location.replace("/");
+        }, 1000);
+        }
     }
   },
   mounted() {

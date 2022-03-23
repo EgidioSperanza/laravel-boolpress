@@ -2162,7 +2162,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     userLogout: function userLogout() {
-      window.location.replace("/logout");
+      try {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("logout").then(function (response) {
+          window.location.replace("/logout");
+        });
+      } catch (er) {
+        console.log(er);
+      } finally {
+        setTimeout(function () {
+          window.location.replace("/");
+        }, 1000);
+      }
     }
   },
   mounted: function mounted() {
