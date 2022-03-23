@@ -2168,10 +2168,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       } catch (er) {
         console.log(er);
-      } finally {
-        setTimeout(function () {
-          window.location.replace("/");
-        }, 1000);
       }
     }
   },

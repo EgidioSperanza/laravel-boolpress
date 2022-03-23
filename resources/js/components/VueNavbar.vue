@@ -69,11 +69,7 @@ export default {
         })
     }catch (er) {
         console.log(er);
-        } finally {
-            setTimeout(() => {
-              window.location.replace("/");
-        }, 1000);
-        }
+      } 
     }
   },
   mounted() {
