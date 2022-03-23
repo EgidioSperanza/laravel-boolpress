@@ -1947,17 +1947,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    pagination: Object,
-    emptyAlert: Boolean
+    pagination: Object
   }
 });
 
@@ -2358,6 +2350,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2370,7 +2371,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       posts: [],
       pagination: {},
-      loading: true
+      loading: true,
+      hasPosts: true
     };
   },
   methods: {
@@ -2403,27 +2405,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 resp = _context.sent;
                 _this.pagination = resp.data;
                 _this.posts = resp.data.data;
-                _context.next = 15;
+
+                if (_this.pagination.total === 0) {
+                  _this.hasPosts = false;
+                }
+
+                _context.next = 16;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](4);
                 console.log(_context.t0);
 
-              case 15:
-                _context.prev = 15;
+              case 16:
+                _context.prev = 16;
                 setTimeout(function () {
                   _this.loading = false;
                 }, 1000);
-                return _context.finish(15);
+                return _context.finish(16);
 
-              case 18:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[4, 12, 15, 18]]);
+        }, _callee, null, [[4, 13, 16, 19]]);
       }))();
     }
   },
@@ -26293,123 +26300,89 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.pagination.last_page > 1
-      ? _c("nav", { staticClass: "my-2 d-flex justify-content-end" }, [
+    _c("nav", { staticClass: "my-2 d-flex justify-content-end" }, [
+      _c(
+        "ul",
+        { staticClass: "pagination" },
+        [
           _c(
-            "ul",
-            { staticClass: "pagination" },
+            "li",
+            {
+              class:
+                _vm.pagination.current_page === 1
+                  ? "page-item disabled"
+                  : "page-item",
+            },
             [
               _c(
-                "li",
+                "a",
                 {
-                  class:
-                    _vm.pagination.current_page === 1
-                      ? "page-item disabled"
-                      : "page-item",
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      on: {
-                        click: function ($event) {
-                          _vm.$emit(
-                            "fetchPosts",
-                            _vm.pagination.current_page - 1
-                          )
-                        },
-                      },
+                  staticClass: "page-link",
+                  on: {
+                    click: function ($event) {
+                      _vm.$emit("fetchPosts", _vm.pagination.current_page - 1)
                     },
-                    [_vm._v("\n         Previous\n       ")]
-                  ),
-                ]
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.pagination.last_page, function (page) {
-                return _c(
-                  "li",
-                  {
-                    key: page,
-                    class:
-                      _vm.pagination.current_page === page
-                        ? "page-item active"
-                        : "page-item",
                   },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "page-link",
-                        on: {
-                          click: function ($event) {
-                            return _vm.$emit("fetchPosts", page)
-                          },
-                        },
-                      },
-                      [_vm._v("\n         " + _vm._s(page) + "\n       ")]
-                    ),
-                  ]
-                )
-              }),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  class:
-                    _vm.pagination.current_page === _vm.pagination.last_page
-                      ? "page-item disabled"
-                      : "page-item",
                 },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      on: {
-                        click: function ($event) {
-                          _vm.$emit(
-                            "fetchPosts",
-                            _vm.pagination.current_page + 1
-                          )
-                        },
+                [_vm._v("\n         Previous\n       ")]
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.pagination.last_page, function (page) {
+            return _c(
+              "li",
+              {
+                key: page,
+                class:
+                  _vm.pagination.current_page === page
+                    ? "page-item active"
+                    : "page-item",
+              },
+              [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    on: {
+                      click: function ($event) {
+                        return _vm.$emit("fetchPosts", page)
                       },
                     },
-                    [_vm._v("\n         Next\n       ")]
-                  ),
-                ]
+                  },
+                  [_vm._v("\n         " + _vm._s(page) + "\n       ")]
+                ),
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              class:
+                _vm.pagination.current_page === _vm.pagination.last_page
+                  ? "page-item disabled"
+                  : "page-item",
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  on: {
+                    click: function ($event) {
+                      _vm.$emit("fetchPosts", _vm.pagination.current_page + 1)
+                    },
+                  },
+                },
+                [_vm._v("\n         Next\n       ")]
               ),
-            ],
-            2
+            ]
           ),
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.pagination.total === 0 && _vm.emptyAlert
-      ? _c(
-          "div",
-          { staticClass: "alert alert-warning py-5" },
-          [
-            _c("h4", [_vm._v("Grazie per averci fatto visita.")]),
-            _vm._v(" "),
-            _c("p", { staticClass: "lead" }, [
-              _vm._v(
-                "\n     Non ci sono Post da Visualizzare. Se sei registrato puoi essere il primo!\n   "
-              ),
-            ]),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary mb-2 text-light",
-                attrs: { to: "/create" },
-              },
-              [_vm._v("Scrivi Post")]
-            ),
-          ],
-          1
-        )
-      : _vm._e(),
+        ],
+        2
+      ),
+    ]),
   ])
 }
 var staticRenderFns = []
@@ -26925,49 +26898,75 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("h1", [_vm._v("Elenco dei posts di BoolPress")]),
-      _vm._v(" "),
-      _c("PaginationNav", {
-        attrs: { pagination: _vm.pagination, emptyAlert: true },
-        on: { fetchPosts: _vm.fetchPosts },
-      }),
-      _vm._v(" "),
-      _vm.loading
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-primary mb-2 text-light",
-              attrs: { type: "button", disabled: "" },
-            },
-            [
-              _c("span", {
-                staticClass: "spinner-border spinner-border-sm",
-                attrs: { role: "status", "aria-hidden": "true" },
+  return _c("div", [
+    _vm.hasPosts
+      ? _c(
+          "div",
+          [
+            _c("h1", [_vm._v("Elenco dei posts di BoolPress")]),
+            _vm._v(" "),
+            _c("PaginationNav", {
+              attrs: { pagination: _vm.pagination },
+              on: { fetchPosts: _vm.fetchPosts },
+            }),
+            _vm._v(" "),
+            _vm.loading
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary mb-2 text-light",
+                    attrs: { type: "button", disabled: "" },
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "spinner-border spinner-border-sm",
+                      attrs: { role: "status", "aria-hidden": "true" },
+                    }),
+                    _vm._v("\n    Loading...\n    "),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "row row-cols-1 row-cols-md-2 g-4" },
+              _vm._l(_vm.posts, function (post) {
+                return _c("PostCard", { key: post.id, attrs: { post: post } })
               }),
-              _vm._v("\n    Loading...\n    "),
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row row-cols-1 row-cols-md-2 g-4" },
-        _vm._l(_vm.posts, function (post) {
-          return _c("PostCard", { key: post.id, attrs: { post: post } })
-        }),
-        1
-      ),
-      _vm._v(" "),
-      _c("PaginationNav", {
-        attrs: { pagination: _vm.pagination, emptyAlert: false },
-        on: { fetchPosts: _vm.fetchPosts },
-      }),
-    ],
-    1
-  )
+              1
+            ),
+            _vm._v(" "),
+            _c("PaginationNav", {
+              attrs: { pagination: _vm.pagination },
+              on: { fetchPosts: _vm.fetchPosts },
+            }),
+          ],
+          1
+        )
+      : _c(
+          "div",
+          { staticClass: "alert alert-warning py-5" },
+          [
+            _c("h4", [_vm._v("Grazie per averci fatto visita.")]),
+            _vm._v(" "),
+            _c("p", { staticClass: "lead" }, [
+              _vm._v(
+                "\n      Non ci sono Post da Visualizzare. Se sei registrato puoi essere il primo!\n    "
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary mb-2 text-light",
+                attrs: { to: "/create" },
+              },
+              [_vm._v("Scrivi Post")]
+            ),
+          ],
+          1
+        ),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43157,14 +43156,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
     path: '/',
-    component: _routes_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    name: "home.index",
-    meta: {
-      title: "Home",
-      linkText: "Home"
-    }
-  }, {
-    path: '/page*',
     component: _routes_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: "home.index",
     meta: {

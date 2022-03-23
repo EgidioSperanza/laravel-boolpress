@@ -16,7 +16,8 @@ class PostController extends Controller
     use SlugGenerator;
 
     public function index() {
-        $posts = Post::orderBy('created_at', 'DESC')->paginate(6);
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
+        // $posts = Post::orderBy('created_at', 'DESC')->where("id","=",100)->paginate(10);
         $posts->load('user', 'category', 'tags');
 
         $posts->each(function ($post) {
@@ -62,7 +63,7 @@ class PostController extends Controller
         if (!$post) {
             abort(404);
           }
-          
+
         if ($post->url) {
             $post->url = asset("storage/" . $post->url);
         }else{
