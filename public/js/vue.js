@@ -2143,17 +2143,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.user = resp.data;
                 localStorage.setItem("user", JSON.stringify(resp.data));
                 window.dispatchEvent(new CustomEvent("storedUserChanged"));
-                _context.next = 14;
+                _context.next = 13;
                 break;
 
               case 9:
                 _context.prev = 9;
                 _context.t0 = _context["catch"](0);
-                console.log("Utente non Loggato");
+                // console.log("Utente non Loggato")
                 localStorage.removeItem("user");
                 window.dispatchEvent(new CustomEvent("storedUserChanged"));
 
-              case 14:
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -2164,7 +2164,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     userLogout: function userLogout() {
       try {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("logout").then(function (response) {
-          window.location.replace("/logout");
+          window.location.replace("/");
         });
       } catch (er) {
         console.log(er);
@@ -2582,6 +2582,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2589,7 +2599,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      postSubmitted: false,
       user: null,
       categories: {},
       tagsList: {},
@@ -2600,7 +2609,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         url: null,
         category_id: 1,
         tags: []
-      }
+      },
+      validationErrors: null,
+      failedSubmit: false,
+      postSubmitted: false
     };
   },
   methods: {
@@ -2614,6 +2626,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
+                _this.postSubmitted = false, _this.validationErrors = null;
+                _this.failedSubmit = false;
                 formDataInstance = new FormData();
                 formDataInstance.append("user_id", _this.newPost.user_id);
                 formDataInstance.append("title", _this.newPost.title);
@@ -2621,26 +2635,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 formDataInstance.append("url", _this.newPost.url);
                 formDataInstance.append("category_id", _this.newPost.category_id);
                 formDataInstance.append("tags", _this.newPost.tags);
-                _context.next = 10;
+                _context.next = 12;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/posts', formDataInstance);
 
-              case 10:
+              case 12:
                 resp = _context.sent;
                 _this.postSubmitted = true;
-                _context.next = 17;
+                _context.next = 22;
                 break;
 
-              case 14:
-                _context.prev = 14;
+              case 16:
+                _context.prev = 16;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0); // 422 = errore di validazione
 
-              case 17:
+                if (_context.t0.response.status === 422) {
+                  _this.validationErrors = _context.t0.response.data.errors;
+                }
+
+                console.log(_context.t0);
+                _this.failedSubmit = true;
+
+              case 22:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 14]]);
+        }, _callee, null, [[0, 16]]);
       }))();
     },
     fetchDetails: function fetchDetails() {
@@ -27060,13 +27081,35 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        !_vm.postSubmitted
-          ? _c("div", { staticClass: "card border p-5 bg-dark text-light" }, [
-              _c("div", { staticClass: "card-header d-flex" }, [
-                _vm._v("\n          Crea un nuovo post\n        "),
-              ]),
+    !_vm.postSubmitted
+      ? _c("div", { staticClass: "row justify-content-center" }, [
+          _vm.failedSubmit
+            ? _c("div", { staticClass: "alert alert-danger py-5" }, [
+                _vm.user
+                  ? _c("div", [
+                      _c("h4", [_vm._v("Invio Fallito")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "lead" }, [
+                        _vm._v(
+                          "\n          La sua richiesta ha avuto esito negativo. Riprovare!\n        "
+                        ),
+                      ]),
+                    ])
+                  : _c("div", [
+                      _c("h4", [_vm._v("Invio Fallito")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "lead" }, [
+                        _vm._v(
+                          "\n          Per scrivere un post devi essere loggato!\n        "
+                        ),
+                      ]),
+                    ]),
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-8" }, [
+            _c("div", { staticClass: "card border p-5 bg-dark text-light" }, [
+              _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c(
@@ -27097,7 +27140,6 @@ var render = function () {
                           type: "text",
                           name: "title",
                           placeholder: "Inserisci il titolo",
-                          required: "",
                         },
                         domProps: { value: _vm.newPost.title },
                         on: {
@@ -27110,6 +27152,22 @@ var render = function () {
                         },
                       }),
                     ]),
+                    _vm._v(" "),
+                    _vm.validationErrors && _vm.validationErrors.title
+                      ? _c(
+                          "div",
+                          { staticClass: "text-danger" },
+                          _vm._l(
+                            _vm.validationErrors.title,
+                            function (errorTitle, index) {
+                              return _c("span", { key: index }, [
+                                _vm._v(_vm._s(errorTitle) + " "),
+                              ])
+                            }
+                          ),
+                          0
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "mb-3" }, [
                       _c(
@@ -27133,6 +27191,22 @@ var render = function () {
                         on: { change: _vm.onAttachmentChange },
                       }),
                     ]),
+                    _vm._v(" "),
+                    _vm.validationErrors && _vm.validationErrors.url
+                      ? _c(
+                          "div",
+                          { staticClass: "text-danger" },
+                          _vm._l(
+                            _vm.validationErrors.url,
+                            function (errorUrl, index) {
+                              return _c("span", { key: index }, [
+                                _vm._v(_vm._s(errorUrl) + " "),
+                              ])
+                            }
+                          ),
+                          0
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "mb-3" }, [
                       _c(
@@ -27302,7 +27376,6 @@ var render = function () {
                           name: "content",
                           rows: "10",
                           placeholder: "Inizia a scrivere qualcosa...",
-                          required: "",
                         },
                         domProps: { value: _vm.newPost.content },
                         on: {
@@ -27319,6 +27392,22 @@ var render = function () {
                         },
                       }),
                     ]),
+                    _vm._v(" "),
+                    _vm.validationErrors && _vm.validationErrors.content
+                      ? _c(
+                          "div",
+                          { staticClass: "text-danger" },
+                          _vm._l(
+                            _vm.validationErrors.content,
+                            function (errorContent, index) {
+                              return _c("span", { key: index }, [
+                                _vm._v(_vm._s(errorContent) + " "),
+                              ])
+                            }
+                          ),
+                          0
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -27360,35 +27449,42 @@ var render = function () {
                   ]
                 ),
               ]),
-            ])
-          : _c(
-              "div",
-              { staticClass: "alert alert-success py-5" },
-              [
-                _c("h4", [_vm._v("Grazie per averci contattato.")]),
-                _vm._v(" "),
-                _c("p", { staticClass: "lead" }, [
-                  _vm._v(
-                    "\n          Il tuo Post è stato inviato correttamente\n        "
-                  ),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-primary mb-2 text-light",
-                    attrs: { to: "/" },
-                  },
-                  [_vm._v("Torna alla Home")]
-                ),
-              ],
-              1
+            ]),
+          ]),
+        ])
+      : _c(
+          "div",
+          { staticClass: "alert alert-success py-5" },
+          [
+            _c("h4", [_vm._v("Grazie per averci contattato.")]),
+            _vm._v(" "),
+            _c("p", { staticClass: "lead" }, [
+              _vm._v("\n      Il tuo Post è stato inviato correttamente\n    "),
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary mb-2 text-light",
+                attrs: { to: "/" },
+              },
+              [_vm._v("Torna alla Home")]
             ),
-      ]),
-    ]),
+          ],
+          1
+        ),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header d-flex" }, [
+      _c("h1", [_vm._v("Crea un nuovo post")]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -43118,15 +43214,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./resources/js/components/VueNavbar.vue ***!
   \***********************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VueNavbar_vue_vue_type_template_id_6a89974a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VueNavbar.vue?vue&type=template&id=6a89974a& */ "./resources/js/components/VueNavbar.vue?vue&type=template&id=6a89974a&");
 /* harmony import */ var _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VueNavbar.vue?vue&type=script&lang=js& */ "./resources/js/components/VueNavbar.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -43156,7 +43251,7 @@ component.options.__file = "resources/js/components/VueNavbar.vue"
 /*!************************************************************************!*\
   !*** ./resources/js/components/VueNavbar.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43213,7 +43308,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
     path: '/',
-    alias: '/logout',
     component: _routes_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: "home.index",
     meta: {

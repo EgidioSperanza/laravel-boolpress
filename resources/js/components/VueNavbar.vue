@@ -56,7 +56,7 @@ export default {
 
         window.dispatchEvent(new CustomEvent("storedUserChanged"));
       } catch (er) {
-        console.log("Utente non Loggato")
+        // console.log("Utente non Loggato")
         localStorage.removeItem("user");
 
         window.dispatchEvent(new CustomEvent("storedUserChanged"));
@@ -65,7 +65,7 @@ export default {
     userLogout() {
       try{
       axios.post("logout").then(response => { 
-        window.location.replace("/logout");
+        window.location.replace("/");
         })
     }catch (er) {
         console.log(er);

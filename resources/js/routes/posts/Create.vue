@@ -1,10 +1,24 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center"  v-if="!postSubmitted">
+      <div v-if="failedSubmit" class="alert alert-danger py-5">
+        <div v-if="user">
+          <h4>Invio Fallito</h4>
+          <p class="lead">
+            La sua richiesta ha avuto esito negativo. Riprovare!
+          </p>
+        </div>
+        <div v-else>
+          <h4>Invio Fallito</h4>
+          <p class="lead">
+            Per scrivere un post devi essere loggato!
+          </p>
+        </div>
+      </div>
       <div class="col-md-8">
-        <div class="card border p-5 bg-dark text-light" v-if="!postSubmitted">
+        <div class="card border p-5 bg-dark text-light">
           <div class="card-header d-flex">
-            Crea un nuovo post
+            <h1>Crea un nuovo post</h1>
           </div>
 
           <div class="card-body">
@@ -17,8 +31,10 @@
                   class="form-control"
                   placeholder="Inserisci il titolo"
                   v-model="newPost.title"
-                  required
                 />
+              </div>
+              <div class="text-danger" v-if="validationErrors && validationErrors.title">
+                <span v-for="(errorTitle, index) in validationErrors.title" :key="index">{{errorTitle}} </span>
               </div>
               <div class="mb-3">
                 <label for="url" class="form-label">
@@ -33,18 +49,9 @@
                   @change="onAttachmentChange"
                 />
               </div>
-              <!-- <div class="mb-3">
-                <label for="url" class="form-label">Image Url</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="url"
-                  id="url"
-                  aria-describedby="helpId"
-                  placeholder="Image Url"
-                  v-model="newPost.url"
-                />
-              </div> -->
+              <div class="text-danger" v-if="validationErrors && validationErrors.url">
+                <span v-for="(errorUrl, index) in validationErrors.url" :key="index">{{errorUrl}} </span>
+              </div>
               <div class="mb-3">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" class="form-select"  v-model="newPost.category_id">
@@ -72,7 +79,7 @@
                   </label>
                 </div>
               </div>
-                <div class="mb-3">
+              <div class="mb-3">
                 <label>Contenuto</label>
                 <textarea
                   name="content"
@@ -80,10 +87,13 @@
                   class="form-control"
                   placeholder="Inizia a scrivere qualcosa..."
                   v-model="newPost.content"
-                  required
-                  ></textarea
-                >
+                  >
+                </textarea>
               </div>
+              <div class="text-danger" v-if="validationErrors && validationErrors.content">
+                <span v-for="(errorContent, index) in validationErrors.content" :key="index">{{errorContent}} </span>
+              </div>
+
               <div class="card-footer form-group">
                 <router-link
                   to="/"
@@ -99,14 +109,14 @@
             </form>
           </div>
         </div>
-        <div v-else class="alert alert-success py-5">
-          <h4>Grazie per averci contattato.</h4>
-          <p class="lead">
-            Il tuo Post è stato inviato correttamente
-          </p>
-            <router-link class="btn btn-primary mb-2 text-light" to="/">Torna alla Home</router-link>
-        </div>
       </div>
+    </div>
+    <div v-else class="alert alert-success py-5">
+      <h4>Grazie per averci contattato.</h4>
+      <p class="lead">
+        Il tuo Post è stato inviato correttamente
+      </p>
+        <router-link class="btn btn-primary mb-2 text-light" to="/">Torna alla Home</router-link>
     </div>
   </div>
 </template>
@@ -120,7 +130,6 @@ export default {
     },
   data() {
     return {
-      postSubmitted:false,
       user: null,
       categories:{},
       tagsList:{},
@@ -131,12 +140,19 @@ export default {
             url: null,
             category_id: 1,
             tags: [],
-        }
+        },
+      validationErrors: null,
+      failedSubmit:false,
+      postSubmitted: false,
     }
   },
   methods: {
     async createPost() {
       try{
+        this.postSubmitted = false,
+        this.validationErrors= null;
+        this.failedSubmit=false;
+
         const formDataInstance = new FormData();
         formDataInstance.append("user_id", this.newPost.user_id);
         formDataInstance.append("title", this.newPost.title);
@@ -145,11 +161,17 @@ export default {
         formDataInstance.append("category_id", this.newPost.category_id);
         formDataInstance.append("tags", this.newPost.tags);
         const resp = await axios.post('/api/posts', formDataInstance);
-
         this.postSubmitted=true;
+
       }
       catch(er){
         console.log(er)
+        // 422 = errore di validazione
+        if (er.response.status === 422) {
+          this.validationErrors = er.response.data.errors;
+        }
+        console.log(er)
+          this.failedSubmit=true;
       }
     },
     async fetchDetails(category = 1) {
