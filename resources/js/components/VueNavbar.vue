@@ -27,6 +27,9 @@
             <a class="nav-link text-light" href="/login" v-if="!user"> Login </a>
             <a class="nav-link text-light" href="/login" v-else> {{user.name}} </a>
           </li>
+          <li class="nav-item" v-if="user">
+            <a class="nav-link text-light" @click="userLogout"> Logout </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -59,8 +62,8 @@ export default {
         window.dispatchEvent(new CustomEvent("storedUserChanged"));
       }
     },
-    logoutSubmit() {
-      axios.post(route('logout'));
+    userLogout() {
+        window.location.replace("/logout");
     }
   },
   mounted() {

@@ -2113,6 +2113,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2158,8 +2161,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, null, [[0, 9]]);
       }))();
     },
-    logoutSubmit: function logoutSubmit() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(route('logout'));
+    userLogout: function userLogout() {
+      window.location.replace("/logout");
     }
   },
   mounted: function mounted() {
@@ -26653,6 +26656,19 @@ var render = function () {
                         [_vm._v(" " + _vm._s(_vm.user.name) + " ")]
                       ),
                 ]),
+                _vm._v(" "),
+                _vm.user
+                  ? _c("li", { staticClass: "nav-item" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "nav-link text-light",
+                          on: { click: _vm.userLogout },
+                        },
+                        [_vm._v(" Logout ")]
+                      ),
+                    ])
+                  : _vm._e(),
               ],
               2
             ),
@@ -43096,14 +43112,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./resources/js/components/VueNavbar.vue ***!
   \***********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VueNavbar_vue_vue_type_template_id_6a89974a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VueNavbar.vue?vue&type=template&id=6a89974a& */ "./resources/js/components/VueNavbar.vue?vue&type=template&id=6a89974a&");
 /* harmony import */ var _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VueNavbar.vue?vue&type=script&lang=js& */ "./resources/js/components/VueNavbar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VueNavbar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -43133,7 +43150,7 @@ component.options.__file = "resources/js/components/VueNavbar.vue"
 /*!************************************************************************!*\
   !*** ./resources/js/components/VueNavbar.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43190,6 +43207,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
     path: '/',
+    alias: '/logout',
     component: _routes_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: "home.index",
     meta: {
