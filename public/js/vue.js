@@ -2560,6 +2560,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2575,7 +2588,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         user_id: "",
         title: "",
         content: "",
-        url: "",
+        url: null,
         category_id: 1,
         tags: []
       }
@@ -2583,46 +2596,77 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     createPost: function createPost() {
-      try {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/posts', this.newPost);
-        this.postSubmitted = true;
-      } catch (er) {
-        console.log(er);
-      }
-    },
-    fetchDetails: function fetchDetails() {
-      var _arguments = arguments,
-          _this = this;
+      var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var category, resp;
+        var formDataInstance, resp;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                category = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
-                _context.prev = 1;
-                _context.next = 4;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/create");
+                _context.prev = 0;
+                formDataInstance = new FormData();
+                formDataInstance.append("user_id", _this.newPost.user_id);
+                formDataInstance.append("title", _this.newPost.title);
+                formDataInstance.append("content", _this.newPost.content);
+                formDataInstance.append("url", _this.newPost.url);
+                formDataInstance.append("category_id", _this.newPost.category_id);
+                formDataInstance.append("tags", _this.newPost.tags);
+                _context.next = 10;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/posts', formDataInstance);
 
-              case 4:
+              case 10:
                 resp = _context.sent;
-                _this.categories = resp.data.categories;
-                _this.tagsList = resp.data.tags;
-                _context.next = 12;
+                _this.postSubmitted = true;
+                _context.next = 17;
                 break;
 
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](1);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
 
-              case 12:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 9]]);
+        }, _callee, null, [[0, 14]]);
+      }))();
+    },
+    fetchDetails: function fetchDetails() {
+      var _arguments = arguments,
+          _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var category, resp;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                category = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
+                _context2.prev = 1;
+                _context2.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/create");
+
+              case 4:
+                resp = _context2.sent;
+                _this2.categories = resp.data.categories;
+                _this2.tagsList = resp.data.tags;
+                _context2.next = 12;
+                break;
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](1);
+                console.log(_context2.t0);
+
+              case 12:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[1, 9]]);
       }))();
     },
     getStoredUser: function getStoredUser() {
@@ -2633,15 +2677,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } else {
         this.user = null;
       }
+    },
+    onAttachmentChange: function onAttachmentChange(event) {
+      this.newPost.url = event.target.files[0];
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.fetchDetails();
     this.getStoredUser();
     window.addEventListener("storedUserChanged", function () {
-      _this2.getStoredUser();
+      _this3.getStoredUser();
     });
   }
 });
@@ -27046,35 +27093,22 @@ var render = function () {
                       _c(
                         "label",
                         { staticClass: "form-label", attrs: { for: "url" } },
-                        [_vm._v("Image Url")]
+                        [
+                          _vm._v(
+                            "\n                Immagine del Post\n              "
+                          ),
+                        ]
                       ),
                       _vm._v(" "),
                       _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newPost.url,
-                            expression: "newPost.url",
-                          },
-                        ],
                         staticClass: "form-control",
                         attrs: {
-                          type: "text",
+                          type: "file",
                           name: "url",
                           id: "url",
                           "aria-describedby": "helpId",
-                          placeholder: "Image Url",
                         },
-                        domProps: { value: _vm.newPost.url },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.newPost, "url", $event.target.value)
-                          },
-                        },
+                        on: { change: _vm.onAttachmentChange },
                       }),
                     ]),
                     _vm._v(" "),

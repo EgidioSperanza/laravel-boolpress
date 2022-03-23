@@ -21,6 +21,19 @@
                 />
               </div>
               <div class="mb-3">
+                <label for="url" class="form-label">
+                  Immagine del Post
+                </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  name="url"
+                  id="url"
+                   aria-describedby="helpId"
+                  @change="onAttachmentChange"
+                />
+              </div>
+              <!-- <div class="mb-3">
                 <label for="url" class="form-label">Image Url</label>
                 <input
                   type="text"
@@ -31,7 +44,7 @@
                   placeholder="Image Url"
                   v-model="newPost.url"
                 />
-              </div>
+              </div> -->
               <div class="mb-3">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" class="form-select"  v-model="newPost.category_id">
@@ -115,16 +128,23 @@ export default {
             user_id: "",
             title: "",
             content: "",
-            url: "",
+            url: null,
             category_id: 1,
             tags: [],
         }
     }
   },
   methods: {
-    createPost() {
+    async createPost() {
       try{
-        axios.post('/api/posts', this.newPost);
+        const formDataInstance = new FormData();
+        formDataInstance.append("user_id", this.newPost.user_id);
+        formDataInstance.append("title", this.newPost.title);
+        formDataInstance.append("content", this.newPost.content);
+        formDataInstance.append("url", this.newPost.url);
+        formDataInstance.append("category_id", this.newPost.category_id);
+        formDataInstance.append("tags", this.newPost.tags);
+        const resp = await axios.post('/api/posts', formDataInstance);
 
         this.postSubmitted=true;
       }
@@ -132,7 +152,6 @@ export default {
         console.log(er)
       }
     },
-
     async fetchDetails(category = 1) {
       try{
         const resp = await axios.get("/api/create");
@@ -143,13 +162,16 @@ export default {
         console.log(er);
       } 
     },
-        getStoredUser() {
+    getStoredUser() {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         this.user = JSON.parse(storedUser);
       } else {
         this.user = null;
       }
+    },
+      onAttachmentChange(event) {
+      this.newPost.url = event.target.files[0];
     },
   },
     mounted() {

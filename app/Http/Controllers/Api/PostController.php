@@ -10,6 +10,7 @@ use App\Tag;
 use App\Traits\SlugGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -46,6 +47,9 @@ class PostController extends Controller
         $post->fill($data);
         $post->slug = $this->generateSlug($post->title);
         $post->user_id = Auth::user()->id;
+        if(key_exists("url", $data)){
+            $post->url = Storage::put("postImg", $data["url"]);
+          }
         $post->save();
 
         if (key_exists("tags", $data)) {
