@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card bg-secondary">
                 <h1 class="card-header text-center">{{ __('Register') }}</h1>
 
                 <div class="card-body">
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="offset-md-4 col-md-6 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-success">
                                 {{ __('Register') }}
                             </button>
                         </div>

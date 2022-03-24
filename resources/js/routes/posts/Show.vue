@@ -2,7 +2,6 @@
   <div class="border border-ligth rounded p-4">
     <h1>{{ post.title }}</h1>
     <h3 v-if="post.user_id">Autore: {{ post.user.name }}</h3>
-    <div class="d-flex">
       <img v-if="post.url" :src="post.url" :alt="post.title" class="me-2 border border-primary"/>
       <div class="me-2">
         <div v-html="post.content">
@@ -25,20 +24,26 @@
         </div>
         <hr />
         <PostDate :post="post"></PostDate>
+        <div class="mt-2 text-end">
+          <router-link class="btn btn-light" to="/">Torna alla Home</router-link>
+
+          <DeletePostBtn class="text-end" :post="post"></DeletePostBtn>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import PostDate from '../../components/PostDate';
+import DeletePostBtn from '../../components/DeletePostBtn';
 
 export default {
-  components: { PostDate },
+  components: { PostDate, DeletePostBtn },
   data() {
     return {
       post: {},
+      user:null,
     }
   },
   methods: {
@@ -52,8 +57,9 @@ export default {
     },
   },
   mounted() {
-    this.fetchPost()
+    this.fetchPost();
   },
+
 }
 </script>
 

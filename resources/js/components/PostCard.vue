@@ -3,7 +3,8 @@
     <div class="card bg-dark border-light h-100">
         <div class="card-header text-end border-bottom mb-2"> 
           <router-link class="btn btn-primary text-light" :to="{ name:'post.show', params: { post: post.slug } }">Dettagli</router-link>
-            <h3 class="card-title text-start mt-2">Titolo: {{ post.title }}</h3>
+          <DeletePostBtn :post="post"></DeletePostBtn>
+          <h3 class="card-title text-start mt-2">Titolo: {{ post.title }}</h3>
         </div>
       <img
         :src="post.url"
@@ -28,16 +29,17 @@
 </template>
 
 <script>
-import PostDate from './PostDate.vue'
+import axios from 'axios';
+import PostDate from './PostDate.vue';
+import DeletePostBtn from './DeletePostBtn.vue';
 export default {
-  components: { PostDate },
+  components: { PostDate, DeletePostBtn },
   props: {
     post: Object,
+    user: Object,
   },
   data() {
     return {};
-  },
-  methods: {
   },
 }
 </script>

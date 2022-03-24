@@ -32,6 +32,7 @@ export default {
   components: { PostCard, PaginationNav },
   data() {
     return {
+        user: null,
         posts: [],
         pagination: {},
         loading:true,
@@ -64,9 +65,21 @@ export default {
         }, 1000);
         }
     },
+    getStoredUser() {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        this.user = JSON.parse(storedUser);
+      } else {
+        this.user = null;
+      }
+    },
   },
   mounted() {
     this.fetchPosts();
+    this.getStoredUser();
+    window.addEventListener("storedUserChanged", () => {
+    this.getStoredUser();
+    })
   },
 };
 

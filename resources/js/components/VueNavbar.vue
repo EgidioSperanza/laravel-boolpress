@@ -23,12 +23,18 @@
           <li class="nav-item" v-for="route in routes" :key="route.path">
             <router-link class="nav-link text-light" :to="!route.path ? '/' : route.path">{{route.meta.linkText}}</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-light" href="/login" v-if="!user"> Login </a>
-            <a class="nav-link text-light" href="/login" v-else> {{user.name}} </a>
+          <li v-if="user" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.name }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a role="button" class="nav-link text-light text-dark" @click="userLogout"> Logout </a>
+              </li>
+            </ul>
           </li>
-          <li class="nav-item" v-if="user">
-            <a class="nav-link text-light" @click="userLogout"> Logout </a>
+          <li v-else class="nav-item">
+            <a class="nav-link text-light" href="/login"> Login </a>
           </li>
         </ul>
       </div>
@@ -62,11 +68,10 @@ export default {
         window.dispatchEvent(new CustomEvent("storedUserChanged"));
       }
     },
-    userLogout() {
+    async userLogout() {
       try{
-      axios.post("logout").then(response => { 
-        window.location.replace("/");
-        })
+        const resp = await axios.post("api/logout");
+        this.user=null;
     }catch (er) {
         console.log(er);
       } 
