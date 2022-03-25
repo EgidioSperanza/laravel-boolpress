@@ -2385,6 +2385,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -27344,20 +27345,20 @@ var render = function () {
   return _c("div", [
     _c("h1", [_vm._v("Contatti")]),
     _vm._v(" "),
+    _vm.failedSubmit
+      ? _c("div", { staticClass: "alert alert-danger py-5" }, [
+          _c("h4", [_vm._v("Invio Fallito")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "lead" }, [
+            _vm._v(
+              "\n      La sua richiesta ha avuto esito negativo. Riprovare!\n    "
+            ),
+          ]),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     !_vm.messageSubmitted
       ? _c("div", [
-          _vm.failedSubmit
-            ? _c("div", { staticClass: "alert alert-danger py-5" }, [
-                _c("h4", [_vm._v("Invio Fallito")]),
-                _vm._v(" "),
-                _c("p", { staticClass: "lead" }, [
-                  _vm._v(
-                    "\n        La sua richiesta ha avuto esito negativo. Riprovare!\n      "
-                  ),
-                ]),
-              ])
-            : _vm._e(),
-          _vm._v(" "),
           _c("div", { staticClass: "mb-3" }, [
             _c("label", { staticClass: "form-label", attrs: { for: "name" } }, [
               _vm._v("Nome e Cognome"),

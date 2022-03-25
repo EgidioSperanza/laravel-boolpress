@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>Contatti</h1>
+    <div v-if="failedSubmit" class="alert alert-danger py-5">
+      <h4>Invio Fallito</h4>
+      <p class="lead">
+        La sua richiesta ha avuto esito negativo. Riprovare!
+      </p>
+    </div>
     <div v-if="!messageSubmitted">
-      <div v-if="failedSubmit" class="alert alert-danger py-5">
-        <h4>Invio Fallito</h4>
-        <p class="lead">
-          La sua richiesta ha avuto esito negativo. Riprovare!
-        </p>
-      </div>
       <div class="mb-3">
         <label for="name" class="form-label">Nome e Cognome</label>
         <input type="text" class="form-control" id="name" placeholder="Inserisci il nome completo" v-model="contact.name">
@@ -38,6 +38,7 @@
         possibile.
       </p>
     </div>
+
   </div>
 </template>
 
